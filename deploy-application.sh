@@ -26,3 +26,5 @@ sudo systemctl enable httpd
 
 sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
 sudo firewall-cmd --reload
+
+sudo yum install php php-mysqlnd
