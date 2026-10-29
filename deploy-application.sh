@@ -45,7 +45,7 @@ sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
 sudo systemctl reload httpd
 
 
-cat > /var/www/html/.env <<-EOF
+sudo tee /var/www/html/.env > /dev/null <<'EOF'
 DB_HOST=localhost
 DB_USER=ecomuser
 DB_PASSWORD=ecompassword
@@ -53,5 +53,27 @@ DB_NAME=ecomdb
 EOF
 
 
+
+
 PHP_FILE="/var/www/html/index.php"
-sed -i "/\\\$dbHost = getenv('DB_HOST');/i\\                        loadEnv(__DIR__ . '/.env');" "$PHP_FILE"
+
+sudo sed -i "/\\\$dbHost = getenv('DB_HOST');/i\\
+function loadEnv(\$path)\\
+{\\
+    if (!file_exists(\$path)) {\\
+        return false;\\
+    }\\
+    \$lines = file(\$path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);\\
+    foreach (\$lines as \$line) {\\
+        if (strpos(trim(\$line), '#') === 0) {\\
+            continue;\\
+        }\\
+        list(\$name, \$value) = explode('=', \$line, 2);\\
+        \$name = trim(\$name);\\
+        \$value = trim(\$value);\\
+        putenv(sprintf('%s=%s', \$name, \$value));\\
+    }\\
+    return true;\\
+}\\
+loadEnv(__DIR__ . '/.env');\\
+" "$PHP_FILE"
