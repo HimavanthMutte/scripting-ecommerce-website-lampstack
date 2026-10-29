@@ -23,3 +23,6 @@ sudo mysql < configure-db.sql
 sudo yum install httpd -y
 sudo systemctl start httpd
 sudo systemctl enable httpd
+
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --reload
