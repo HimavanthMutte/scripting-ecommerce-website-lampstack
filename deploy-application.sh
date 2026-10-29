@@ -29,3 +29,9 @@ sudo firewall-cmd --reload
 
 sudo yum install php php-mysqlnd -y
 
+sudo yum install -y git
+sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+
+sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
+sudo systemctl reload httpd
+
