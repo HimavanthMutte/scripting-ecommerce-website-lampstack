@@ -51,3 +51,7 @@ DB_USER=ecomuser
 DB_PASSWORD=ecompassword
 DB_NAME=ecomdb
 EOF
+
+
+PHP_FILE="/var/www/html/index.php"
+sed -i "/\\\$dbHost = getenv('DB_HOST');/i\\                        loadEnv(__DIR__ . '/.env');" "$PHP_FILE"
