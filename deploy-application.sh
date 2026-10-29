@@ -18,5 +18,8 @@ CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';
 GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';
 FLUSH PRIVILEGES;
 EOF
-
 sudo mysql < configure-db.sql
+
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
